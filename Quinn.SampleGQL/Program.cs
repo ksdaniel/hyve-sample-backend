@@ -8,16 +8,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 
+var authority = builder.Configuration.GetSection("Authentication").GetValue("Authority", string.Empty);
+var validAudience = builder.Configuration.GetSection("Authentication").GetValue("ValidAudience", string.Empty);
+
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
-        options.Authority = "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_C1yJIPZCf";
+        options.Authority = authority;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateAudience = false,
-            ValidAudience = "79nm6197p91uq3ja860s4rsq3i",
+            ValidAudience = validAudience,
             ValidateIssuer = true,
-            ValidIssuer = $"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_C1yJIPZCf",
+            ValidIssuer = authority,
             ValidAudiences = ["profile"]
         };
         options.Events = new JwtBearerEvents()
