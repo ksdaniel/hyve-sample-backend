@@ -1,0 +1,6 @@
+@Quinn.SampleGQL_HostAddress = http://localhost:5068
+
+GET {{Quinn.SampleGQL_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
