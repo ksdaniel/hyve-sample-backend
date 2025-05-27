@@ -5,11 +5,25 @@ namespace Quinn.SampleGQL.Infrastructure;
 
 public class ApplicationDatabase : IApplicationDatabase
 {
+    
+    private readonly IConfiguration _configuration;
+    
+    private List<ClientData> _clients = new List<ClientData>();
+
+    public ApplicationDatabase(IConfiguration configuration)
+    {
+        _configuration = configuration;
+        // Initialize the database with clients
+        var numberOfClients = _configuration.GetValue<int>("NumberOfClients", 1000);
+
+        _clients = Enumerable.Range(1, numberOfClients)
+            .Select(_ => GetRandomClient())
+            .ToList();
+    }
+
     public IQueryable<ClientData> GetClients()
     {
-        return Enumerable.Range(1, 1000)
-            .Select(_ => GetRandomClient())
-            .AsQueryable();
+        return _clients.AsQueryable();
     }
 
     private ClientData GetRandomClient() => new Faker<ClientData>()
