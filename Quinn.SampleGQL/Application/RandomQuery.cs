@@ -1,3 +1,4 @@
+using HotChocolate.Authorization;
 using HotChocolate.Types.Pagination;
 using HotChocolate.Data;
 using Quinn.SampleGQL.Infrastructure;
@@ -7,7 +8,7 @@ namespace Quinn.SampleGQL.Application;
 
 public class RandomQuery(IApplicationDatabase applicationDatabase)
 {
-    
+    [Authorize]
     [UsePaging(IncludeTotalCount = true)]
     [UseSorting]
     public IQueryable<ClientData> GetClients()
