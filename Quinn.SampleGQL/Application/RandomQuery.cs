@@ -16,4 +16,11 @@ public class RandomQuery(IApplicationDatabase applicationDatabase)
         return applicationDatabase.GetClients()
             .AsQueryable();
     }
+    
+    [Authorize]
+    public ClientData? GetClientById(string id)
+    {
+        return applicationDatabase.GetClients()
+            .FirstOrDefault(c => c.Id == id);
+    }
 }
