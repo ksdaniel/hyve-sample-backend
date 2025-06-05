@@ -26,6 +26,70 @@ public class ApplicationDatabase : IApplicationDatabase
         return _clients.AsQueryable();
     }
 
+    public ClientData AddClient(CreateClientDataInput input)
+    {
+        var newClient = new ClientData
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = input.Name,
+            InvestableAssets = input.InvestableAssets,
+            Aum = input.Aum,
+            Salary = input.Salary,
+            DateOnboarded = input.DateOnboarded ?? DateTime.Now.ToString("yyyy-MM-dd"),
+            Status = input.Status,
+            Summary = input.Summary,
+            Phone = input.Phone,
+            Email = input.Email,
+            Priority = input.Priority,
+            DateOfBirth = input.DateOfBirth,
+            Address = input.Address,
+            Prospect = input.Prospect,
+            Unread = input.Unread
+        };
+
+        _clients.Add(newClient);
+        return newClient;
+    }
+
+    public ClientData? UpdateClient(UpdateClientDataInput input)
+    {
+        var existingClient = _clients.FirstOrDefault(c => c.Id == input.Id);
+        if (existingClient == null)
+            return null;
+
+        // Only update fields that are provided (not null)
+        if (input.Name != null)
+            existingClient.Name = input.Name;
+        if (input.InvestableAssets.HasValue)
+            existingClient.InvestableAssets = input.InvestableAssets.Value;
+        if (input.Aum.HasValue)
+            existingClient.Aum = input.Aum;
+        if (input.Salary.HasValue)
+            existingClient.Salary = input.Salary.Value;
+        if (input.DateOnboarded != null)
+            existingClient.DateOnboarded = input.DateOnboarded;
+        if (input.Status.HasValue)
+            existingClient.Status = input.Status.Value;
+        if (input.Summary != null)
+            existingClient.Summary = input.Summary;
+        if (input.Phone != null)
+            existingClient.Phone = input.Phone;
+        if (input.Email != null)
+            existingClient.Email = input.Email;
+        if (input.Priority.HasValue)
+            existingClient.Priority = input.Priority;
+        if (input.DateOfBirth != null)
+            existingClient.DateOfBirth = input.DateOfBirth;
+        if (input.Address != null)
+            existingClient.Address = input.Address;
+        if (input.Prospect != null)
+            existingClient.Prospect = input.Prospect;
+        if (input.Unread.HasValue)
+            existingClient.Unread = input.Unread;
+
+        return existingClient;
+    }
+
     private ClientData GetRandomClient() => new Faker<ClientData>()
         .RuleFor(c => c.Id, f => f.Random.Guid().ToString())
         .RuleFor(c => c.Name, f => f.Name.FullName())

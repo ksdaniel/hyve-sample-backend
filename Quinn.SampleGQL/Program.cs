@@ -47,6 +47,7 @@ builder.Services
     })
     .AddAuthorization()
     .AddQueryType<RandomQuery>()
+    .AddMutationType<ClientMutation>()
     .AddFiltering()
     .AddSorting();
 
