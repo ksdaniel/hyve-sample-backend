@@ -37,7 +37,11 @@ builder.Services.AddAuthorization();
 
 builder.Services
     .AddGraphQLServer()
-    .AddAuthorization()
+    .ModifyOptions(o =>
+    {
+        o.EnableDirectiveIntrospection = true;
+    })
+.AddAuthorization()
     .AddQueryType<RandomQuery>()
     .AddFiltering()
     .AddSorting();
