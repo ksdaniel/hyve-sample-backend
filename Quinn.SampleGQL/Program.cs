@@ -41,7 +41,11 @@ builder.Services
     {
         o.EnableDirectiveIntrospection = true;
     })
-.AddAuthorization()
+    .ModifyRequestOptions(o =>
+    {
+        o.IncludeExceptionDetails = true;
+    })
+    .AddAuthorization()
     .AddQueryType<RandomQuery>()
     .AddFiltering()
     .AddSorting();
